@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Documentation Site</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<style>
+    body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+}
+
+.navbar {
+    background-color: #333;
+    color: white;
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.app-name {
+    font-size: 1.5em;
+}
+
+.folder-links {
+    display: flex;
+    gap: 10px;
+}
+
+.folder-link {
+    color: white;
+    text-decoration: none;
+}
+
+.folder-link:hover {
+    text-decoration: underline;
+}
+
+.container {
+    display: flex;
+    flex: 1;
+}
+
+.sidebar {
+    width: 200px;
+    background-color: #1e90ff;
+    padding: 10px;
+    color: white;
+    overflow-y: auto;
+}
+
+.content {
+    flex: 1;
+    padding: 20px;
+    overflow-y: auto;
+}
+
+</style>
+<body>
+    <div class="navbar">
+        <div class="app-name">Placeholder</div>
+        <div class="folder-links">
+            
+                <a href="#" class="folder-link" data-folder="C:\Users\work\Documents\tkBook_md\Best Practice">C:\Users\work\Documents\tkBook_md\Best Practice</a>
+            
+                <a href="#" class="folder-link" data-folder="C:\Users\work\Documents\tkBook_md\Errors">C:\Users\work\Documents\tkBook_md\Errors</a>
+            
+                <a href="#" class="folder-link" data-folder="C:\Users\work\Documents\tkBook_md\Java">C:\Users\work\Documents\tkBook_md\Java</a>
+            
+                <a href="#" class="folder-link" data-folder="C:\Users\work\Documents\tkBook_md\Tumorotek">C:\Users\work\Documents\tkBook_md\Tumorotek</a>
+            
+        </div>
+    </div>
+    <div class="container">
+        <div class="sidebar" id="sidebar"></div>
+        <div class="content">
+            <h1>User Rights and Conditions Documentation</h1>
+<p>This document provides guidelines on how to conditionally perform actions based on user rights within the system. </p>
+<h2>Tables in the DB</h2>
+<p>The operations trights are found in the table operation_type. 
+Operations that are done by the user and that are found in this table are (even login) are saved in the table operation.</p>
+<h2>Overview</h2>
+<p>In the system, actions are controlled based on user permissions. Permissions are determined by functions that check if a user has the right to perform certain actions. This document explains how to conditionally perform actions if a user has the required rights for "Echantillon" (Modification) and "Stockage" (Consultation).</p>
+<h2>Functions Used</h2>
+<h3><code>getDroitOnAction</code></h3>
+<p>This function checks if the user has the right to perform a specific action on a specific entity.</p>
+<h4>Syntax</h4>
+<p><code>java
+public boolean getDroitOnAction(final String nomEntite, final String nomOperation)</code></p>
+<h4>Parameters</h4>
+<ul>
+<li><code>nomEntite</code>: The entity on which the action is to be performed (e.g., "Echantillon", "Stockage").</li>
+<li><code>nomOperation</code>: The action to be performed on the entity (e.g., "Modification", "Consultation").</li>
+</ul>
+<h4>Returns</h4>
+<ul>
+<li><code>true</code> if the user has the right to perform the action on the entity.</li>
+<li><code>false</code> otherwise.</li>
+</ul>
+<h4>Implementation</h4>
+<p>```java
+public boolean getDroitOnAction(final String nomEntite, final String nomOperation) {
+    Boolean admin = false;
+    if(sessionScope.containsKey("Admin")) {
+        admin = (Boolean) sessionScope.get("Admin");
+    }</p>
+<pre><code>// si l'utilisateur est admin =&gt; bouton cliquable
+if(admin) {
+    return true;
+}
+
+// on extrait l'OperationType de la base
+final OperationType operation = ManagerLocator.getOperationTypeManager().findByNomLikeManager(nomOperation, true).get(0);
+
+Hashtable&lt;String, List&lt;OperationType&gt;&gt; droits = new Hashtable&lt;&gt;();
+
+if(sessionScope.containsKey("Droits")) {
+    // on extrait les droits de l'utilisateur
+    droits = (Hashtable&lt;String, List&lt;OperationType&gt;&gt;) sessionScope.get("Droits");
+
+    final List&lt;OperationType&gt; ops = droits.get(nomEntite);
+    return ops.contains(operation);
+}
+return false;
+</code></pre>
+<p>}
+```</p>
+<h2>Conditional Logic</h2>
+<p>To perform an action based on user rights, we use conditional statements that combine the results of <code>getDroitOnAction</code> calls. The condition we are examining is as follows:</p>
+<p><code>javascript
+if (conditionA || (getDroitOnAction("Echantillon", "Modification") &amp;&amp; getDroitOnAction("Stockage", "Consultation"))) {
+    // Perform the action
+}</code></p>
+<h3>Explanation</h3>
+<ol>
+<li><strong><code>conditionA</code></strong>: This is a pre-existing condition that, if true, allows the action to be performed without checking further permissions.</li>
+<li><strong><code>getDroitOnAction("Echantillon", "Modification")</code></strong>: This checks if the user has the right to modify an "Echantillon".</li>
+<li><strong><code>getDroitOnAction("Stockage", "Consultation")</code></strong>: This checks if the user has the right to consult a "Stockage".</li>
+</ol>
+<p>The action is performed if either <code>conditionA</code> is true or both <code>getDroitOnAction("Echantillon", "Modification")</code> and <code>getDroitOnAction("Stockage", "Consultation")</code> are true.</p>
+<h2>Example Usage</h2>
+<p>Here is an example in JavaScript:</p>
+<p>```javascript
+// Pre-existing condition
+var conditionA = true; // or some other condition</p>
+<p>// Check user rights and perform action accordingly
+if (conditionA || (getDroitOnAction("Echantillon", "Modification") &amp;&amp; getDroitOnAction("Stockage", "Consultation"))) {
+    // User has the required rights
+    console.log("User has the required rights. Performing the action...");
+    // Perform the action here
+} else {
+    // User does not have the required rights
+    console.log("User does not have the required rights. Action is not allowed.");
+}
+```</p>
+<h2>Recommendation: Use Enums to Avoid Hard Coding</h2>
+<h3>Problem with Hard Coding</h3>
+<p>Hard coding strings like <code>"Echantillon"</code> and <code>"Modification"</code> can lead to errors, makes the code harder to maintain, and reduces readability. </p>
+<h3>Solution: Use Enums</h3>
+<p>Enums provide a way to define a set of named values. By using enums, we can avoid hard coding and make our code more maintainable and less error-prone.</p>
+<h4>Define Enums</h4>
+<p>First, define enums for entities and operations:</p>
+<p>```java
+public enum EntityType {
+    ECHANTILLON,
+    STOCKAGE,
+    // Add other entities here
+}</p>
+<p>public enum OperationType {
+    MODIFICATION,
+    CONSULTATION,
+    // Add other operations here
+}
+```</p>
+<h4>Update <code>getDroitOnAction</code> Method</h4>
+<p>Update the <code>getDroitOnAction</code> method to use enums instead of strings:</p>
+<p>```java
+public boolean getDroitOnAction(final EntityType entityType, final OperationType operationType) {
+    Boolean admin = false;
+    if(sessionScope.containsKey("Admin")) {
+        admin = (Boolean) sessionScope.get("Admin");
+    }</p>
+<pre><code>if(admin) {
+    return true;
+}
+
+final OperationType operation = ManagerLocator.getOperationTypeManager().findByNomLikeManager(operationType.name(), true).get(0);
+
+Hashtable&lt;EntityType, List&lt;OperationType&gt;&gt; droits = new Hashtable&lt;&gt;();
+
+if(sessionScope.containsKey("Droits")) {
+    droits = (Hashtable&lt;EntityType, List&lt;OperationType&gt;&gt;) sessionScope.get("Droits");
+
+    final List&lt;OperationType&gt; ops = droits.get(entityType);
+    return ops.contains(operation);
+}
+return false;
+</code></pre>
+<p>}
+```</p>
+<h4>Update Conditional Logic</h4>
+<p>Update the conditional logic to use enums:</p>
+<p><code>javascript
+if (conditionA || (getDroitOnAction(EntityType.ECHANTILLON, OperationType.MODIFICATION) &amp;&amp; getDroitOnAction(EntityType.STOCKAGE, OperationType.CONSULTATION))) {
+    // Perform the action
+}</code></p>
+<p>By using enums, the code becomes more readable, maintainable, and less prone to errors.</p>
+<h2>Summary</h2>
+<p>This document outlined how to conditionally perform actions based on user permissions for modifying "Echantillon" and consulting "Stockage". By using the <code>getDroitOnAction</code> function, we can ensure that actions are only performed by users with the appropriate rights. Additionally, using enums instead of hard-coded strings improves code quality and maintainability. The provided examples demonstrate how to implement these best practices in a practical scenario.</p>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', (event) => {
+            document.querySelectorAll('.folder-link').forEach(link => {
+                link.addEventListener('click', function() {
+                    const folder = this.getAttribute('data-folder');
+                    fetchSidebarLinks(folder);
+                });
+            });
+        });
+
+        function fetchSidebarLinks(folder) {
+            const sidebar = document.getElementById('sidebar');
+            sidebar.innerHTML = '';
+            fetch(`${folder}/index.html`).then(response => response.text()).then(data => {
+                const parser = new DOMParser();
+                const doc = parser.parseFromString(data, 'text/html');
+                const links = doc.querySelectorAll('a.nav-link');
+                links.forEach(link => {
+                    sidebar.appendChild(link.cloneNode(true));
+                });
+            });
+        }
+    </script>
+</body>
+</html>

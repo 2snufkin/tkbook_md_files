@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Documentation Site</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<style>
+    body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+}
+
+.navbar {
+    background-color: #333;
+    color: white;
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.app-name {
+    font-size: 1.5em;
+}
+
+.folder-links {
+    display: flex;
+    gap: 10px;
+}
+
+.folder-link {
+    color: white;
+    text-decoration: none;
+}
+
+.folder-link:hover {
+    text-decoration: underline;
+}
+
+.container {
+    display: flex;
+    flex: 1;
+}
+
+.sidebar {
+    width: 200px;
+    background-color: #1e90ff;
+    padding: 10px;
+    color: white;
+    overflow-y: auto;
+}
+
+.content {
+    flex: 1;
+    padding: 20px;
+    overflow-y: auto;
+}
+
+</style>
+<body>
+    <div class="navbar">
+        <div class="app-name">Placeholder</div>
+        <div class="folder-links">
+            
+                <a href="#" class="folder-link" data-folder="C:\Users\work\Documents\tkBook_md\Best Practice">C:\Users\work\Documents\tkBook_md\Best Practice</a>
+            
+                <a href="#" class="folder-link" data-folder="C:\Users\work\Documents\tkBook_md\Errors">C:\Users\work\Documents\tkBook_md\Errors</a>
+            
+                <a href="#" class="folder-link" data-folder="C:\Users\work\Documents\tkBook_md\Java">C:\Users\work\Documents\tkBook_md\Java</a>
+            
+                <a href="#" class="folder-link" data-folder="C:\Users\work\Documents\tkBook_md\Tumorotek">C:\Users\work\Documents\tkBook_md\Tumorotek</a>
+            
+        </div>
+    </div>
+    <div class="container">
+        <div class="sidebar" id="sidebar"></div>
+        <div class="content">
+            <h1>Project Architecture</h1>
+<h2>Project Architecture Overview</h2>
+<p>The TK project is a complex Java-based application with a rich architecture that encompasses multiple components and technologies. In this section, we will provide an overview of its high-level architecture, component interaction, and dependencies, as well as an explanation of the integration of ZK (ZK Framework) with Java. This project also leverages Spring and Spring Security for various aspects of application development.</p>
+<p>In summary, the TK project follows a well-structured architecture, combining various components and technologies such as ZK, Java, Spring, and Spring Security. Understanding this architecture is crucial for effective development, maintenance, and enhancement of the application. Additionally, it's essential to regularly update dependencies, as discussed in a previous section, to ensure the project remains secure and up-to-date.</p>
+<h2>High-Level Architecture: TK Packages</h2>
+<p>The TK project's high-level architecture can be divided into several key components, each serving a specific purpose:</p>
+<ol>
+<li><strong>Model</strong></li>
+<li>The Model layer defines the data structures and is accessed by the DAOs for database operations.</li>
+<li><strong>Entities:</strong> The core data structures of the application, representing entities such as Echantillon, Patient etc., and any other domain-specific/business logic objects.</li>
+<li>
+<p><strong>DAO (Data Access Objects):</strong> Responsible for interacting with the database, including CRUD (Create, Read, Update, Delete) operations on entities. DAOs abstract the underlying data storage.</p>
+</li>
+<li>
+<p><strong>Install</strong></p>
+</li>
+<li>
+<p><strong>Artifacts:</strong> This package contains artifacts necessary for deployment, including configuration files, scripts, and resources needed to install and configure the application.</p>
+</li>
+<li>
+<p><strong>Dashboard</strong></p>
+</li>
+<li>
+<p><strong>Dashboard Specific to AP-HP:</strong> This component is designed to present various instances of TumoroteK through a specialized dashboard. It includes icons and HTML templates.</p>
+</li>
+<li>
+<p><strong>Interface</strong></p>
+</li>
+<li>
+<p><strong>Integration with Other Applications:</strong> This package contains code relevant to interfacing with other external applications or systems, facilitating data exchange and integration.</p>
+</li>
+<li>
+<p><strong>Core Package</strong></p>
+</li>
+<li>
+<p><strong>Managers:</strong> The core business logic and application services are defined here. Managers orchestrate various actions...</p>
+</li>
+<li>
+<p><strong>Webapp Package</strong></p>
+</li>
+<li><strong>Frontend Components:</strong> This package houses all frontend-related components...</li>
+</ol>
+<h2>Explanation of ZK and Java Integration</h2>
+<p>The TK project integrates the ZK Framework with Java to build its user interfaces...</p>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', (event) => {
+            document.querySelectorAll('.folder-link').forEach(link => {
+                link.addEventListener('click', function() {
+                    const folder = this.getAttribute('data-folder');
+                    fetchSidebarLinks(folder);
+                });
+            });
+        });
+
+        function fetchSidebarLinks(folder) {
+            const sidebar = document.getElementById('sidebar');
+            sidebar.innerHTML = '';
+            fetch(`${folder}/index.html`).then(response => response.text()).then(data => {
+                const parser = new DOMParser();
+                const doc = parser.parseFromString(data, 'text/html');
+                const links = doc.querySelectorAll('a.nav-link');
+                links.forEach(link => {
+                    sidebar.appendChild(link.cloneNode(true));
+                });
+            });
+        }
+    </script>
+</body>
+</html>

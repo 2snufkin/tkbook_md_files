@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Documentation Site</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<style>
+    body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+}
+
+.navbar {
+    background-color: #333;
+    color: white;
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.app-name {
+    font-size: 1.5em;
+}
+
+.folder-links {
+    display: flex;
+    gap: 10px;
+}
+
+.folder-link {
+    color: white;
+    text-decoration: none;
+}
+
+.folder-link:hover {
+    text-decoration: underline;
+}
+
+.container {
+    display: flex;
+    flex: 1;
+}
+
+.sidebar {
+    width: 200px;
+    background-color: #1e90ff;
+    padding: 10px;
+    color: white;
+    overflow-y: auto;
+}
+
+.content {
+    flex: 1;
+    padding: 20px;
+    overflow-y: auto;
+}
+
+</style>
+<body>
+    <div class="navbar">
+        <div class="app-name">Placeholder</div>
+        <div class="folder-links">
+            
+                <a href="#" class="folder-link" data-folder="C:\Users\work\Documents\tkBook_md\Best Practice">C:\Users\work\Documents\tkBook_md\Best Practice</a>
+            
+                <a href="#" class="folder-link" data-folder="C:\Users\work\Documents\tkBook_md\Errors">C:\Users\work\Documents\tkBook_md\Errors</a>
+            
+                <a href="#" class="folder-link" data-folder="C:\Users\work\Documents\tkBook_md\Java">C:\Users\work\Documents\tkBook_md\Java</a>
+            
+                <a href="#" class="folder-link" data-folder="C:\Users\work\Documents\tkBook_md\Tumorotek">C:\Users\work\Documents\tkBook_md\Tumorotek</a>
+            
+        </div>
+    </div>
+    <div class="container">
+        <div class="sidebar" id="sidebar"></div>
+        <div class="content">
+            <p>Checksum validation issues in Liquibase can be resolved by updating the checksums in the DATABASECHANGELOG table to match the modified changesets. It's crucial to carefully review and document any intentional changes made to the changelog files to maintain consistency in the database schema evolution process.</p>
+<h2>Liquibase Checksum Validation Issue and Resolution</h2>
+<h3>Problem Overview</h3>
+<p>Liquibase uses checksums to ensure the consistency of changesets in your database schema. When the content of a changeset is modified without updating the corresponding checksum, Liquibase will detect a validation failure during the update process. This validation failure is indicated by an error message similar to the following:
+<code>liquibase.exception.ValidationFailedException: Validation Failed:
+  X change sets check sum
+  ...</code></p>
+<h3>Causes of the Issue</h3>
+<p>The checksum validation issue typically arises when changesets are intentionally modified without updating the checksums. This can happen during development or schema evolution when SQL statements within a changeset are added, modified, or removed.</p>
+<h3>Resolution Steps</h3>
+<p>To resolve the checksum validation issue, follow these steps:</p>
+<ol>
+<li><strong>Identify Changes:</strong></li>
+<li>Open each changelog file mentioned in the error message.</li>
+<li>
+<p>Identify the changes made to the SQL statements within each changeset.</p>
+</li>
+<li>
+<p><strong>Update Checksums:</strong></p>
+</li>
+<li>If you intentionally modified the changesets, update the checksums manually to match the new content.</li>
+<li>
+<p>Use the following SQL command to update the checksum in the <code>DATABASECHANGELOG</code> table for the affected changeset:
+     <code>UPDATE DATABASECHANGELOG SET MD5SUM='8:NEW_CHECKSUM_VALUE' WHERE MD5SUM='8:OLD_CHECKSUM_VALUE';</code>
+     Replace <code>NEW_CHECKSUM_VALUE</code> with the new checksum and <code>OLD_CHECKSUM_VALUE</code> with the old checksum for the changeset.</p>
+</li>
+<li>
+<p><strong>Run SQL Command:</strong></p>
+</li>
+<li>Open your command prompt (CMD) on Windows or terminal on Linux/Mac.</li>
+<li>Type <code>mysql -u your_username -p</code> and press Enter.</li>
+<li>Once logged in, switch to your database using <code>USE your_database_name</code>.</li>
+<li>Run your UPDATE SQL statement as shown in this example.</li>
+</ol>
+<h4>Error Message Related to DETERMINISTIC Function</h4>
+<p>This function has none of DETERMINISTIC...</p>
+<h4>Adjust log_bin_trust_function_creators:</h4>
+<p>You may need to adjust...</p>
+<ul>
+<li>Set it in MySQL configuration file or dynamically:
+  <code>SET GLOBAL log_bin_trust_function_creators = 1;</code></li>
+</ul>
+<p>Be cautious about setting this parameter as it may have security implications due to allowing non-deterministic functions in binary logging context. Understand these implications before making any changes.</p>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', (event) => {
+            document.querySelectorAll('.folder-link').forEach(link => {
+                link.addEventListener('click', function() {
+                    const folder = this.getAttribute('data-folder');
+                    fetchSidebarLinks(folder);
+                });
+            });
+        });
+
+        function fetchSidebarLinks(folder) {
+            const sidebar = document.getElementById('sidebar');
+            sidebar.innerHTML = '';
+            fetch(`${folder}/index.html`).then(response => response.text()).then(data => {
+                const parser = new DOMParser();
+                const doc = parser.parseFromString(data, 'text/html');
+                const links = doc.querySelectorAll('a.nav-link');
+                links.forEach(link => {
+                    sidebar.appendChild(link.cloneNode(true));
+                });
+            });
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Documentation Site</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<style>
+    body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+}
+
+.navbar {
+    background-color: #333;
+    color: white;
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.app-name {
+    font-size: 1.5em;
+}
+
+.folder-links {
+    display: flex;
+    gap: 10px;
+}
+
+.folder-link {
+    color: white;
+    text-decoration: none;
+}
+
+.folder-link:hover {
+    text-decoration: underline;
+}
+
+.container {
+    display: flex;
+    flex: 1;
+}
+
+.sidebar {
+    width: 200px;
+    background-color: #1e90ff;
+    padding: 10px;
+    color: white;
+    overflow-y: auto;
+}
+
+.content {
+    flex: 1;
+    padding: 20px;
+    overflow-y: auto;
+}
+
+</style>
+<body>
+    <div class="navbar">
+        <div class="app-name">Placeholder</div>
+        <div class="folder-links">
+            
+                <a href="#" class="folder-link" data-folder="C:\Users\work\Documents\tkBook_md\Best Practice">C:\Users\work\Documents\tkBook_md\Best Practice</a>
+            
+                <a href="#" class="folder-link" data-folder="C:\Users\work\Documents\tkBook_md\Errors">C:\Users\work\Documents\tkBook_md\Errors</a>
+            
+                <a href="#" class="folder-link" data-folder="C:\Users\work\Documents\tkBook_md\Java">C:\Users\work\Documents\tkBook_md\Java</a>
+            
+                <a href="#" class="folder-link" data-folder="C:\Users\work\Documents\tkBook_md\Tumorotek">C:\Users\work\Documents\tkBook_md\Tumorotek</a>
+            
+        </div>
+    </div>
+    <div class="container">
+        <div class="sidebar" id="sidebar"></div>
+        <div class="content">
+            <h1>Developer's best practices</h1>
+<p>These principles aim to enhance code quality, reduce complexity, and facilitate collaboration among developers.</p>
+<h2>General Best Practices</h2>
+<ul>
+<li><strong>KISS (Keep It Simple, Stupid):</strong> Strive for simplicity in design and implementation. Avoid unnecessary complexity that can hinder understanding and maintenance.</li>
+<li><strong>DRY (Don't Repeat Yourself):</strong> Eliminate redundancy in code by abstracting common functionalities into reusable components, promoting maintainability and reducing errors.</li>
+<li><strong>YAGNI (You Ain't Gonna Need It):</strong> Only implement features necessary for current requirements. Avoid speculative development to prevent unnecessary complexity.</li>
+<li><strong>Boy Scout Rule:</strong> Leave the codebase in a better state than you found it. Consistently improve code quality through small, incremental enhancements.</li>
+<li><strong>Regularly Remove Dead Code:</strong> Identify and eliminate unused or obsolete code to maintain a clean, efficient, and secure software environment, reducing complexity and aiding future maintenance.</li>
+<li><strong>Single Source of Truth:</strong> Keep one authoritative source for a particular piece of information to avoid inconsistencies and ensure data integrity.</li>
+<li><strong>Test-Driven Development (TDD):</strong> Write unit tests before writing the code to ensure the code meets specified requirements, promoting robustness and aiding in code refactoring.</li>
+<li><strong>Don't Make Me Think:</strong> Design software and interfaces to be intuitive, requiring minimal cognitive effort from users for enhanced user experience.</li>
+<li><strong>Comprehensive Documentation:</strong> Include detailed comments, function descriptions, and relevant information in the source code to facilitate understanding and maintenance, ensuring transparency for developers.</li>
+</ul>
+<h2>Writing Methods Best Practices</h2>
+<ul>
+<li><strong>Single Responsibility Principle (SRP):</strong> Ensure each method has a single responsibility, promoting modularity and improving code comprehension.</li>
+<li><strong>Descriptive and Meaningful Names:</strong> Choose names that clearly convey the purpose of the method for better readability and understanding.</li>
+<li><strong>Consistent Naming Conventions:</strong> Follow a consistent naming convention across the codebase to enhance readability and maintain a unified coding style.</li>
+<li><strong>Avoid Magic Numbers and Strings:</strong> Refactor code to eliminate magic numbers or strings, using constants or enumerations for better code maintainability.</li>
+<li><strong>Method Length:</strong> Keep methods short...</li>
+</ul>
+<p><em>(The text continues with more writing methods best practices)</em></p>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', (event) => {
+            document.querySelectorAll('.folder-link').forEach(link => {
+                link.addEventListener('click', function() {
+                    const folder = this.getAttribute('data-folder');
+                    fetchSidebarLinks(folder);
+                });
+            });
+        });
+
+        function fetchSidebarLinks(folder) {
+            const sidebar = document.getElementById('sidebar');
+            sidebar.innerHTML = '';
+            fetch(`${folder}/index.html`).then(response => response.text()).then(data => {
+                const parser = new DOMParser();
+                const doc = parser.parseFromString(data, 'text/html');
+                const links = doc.querySelectorAll('a.nav-link');
+                links.forEach(link => {
+                    sidebar.appendChild(link.cloneNode(true));
+                });
+            });
+        }
+    </script>
+</body>
+</html>

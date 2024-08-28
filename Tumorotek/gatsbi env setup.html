@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <style>
+       /* General reset and body styling */
+body {
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+    color: #333;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+/* Headings */
+h1, h2, h3, h4, h5, h6 {
+    color: #222;
+    margin-top: 0;
+    margin-bottom: 20px;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
+
+h1 {
+    font-size: 2.5em;
+    border-bottom: 2px solid #ddd;
+    padding-bottom: 10px;
+}
+
+h2 {
+    font-size: 2em;
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 8px;
+}
+
+h3 {
+    font-size: 1.75em;
+    margin-bottom: 15px;
+}
+
+h4 {
+    font-size: 1.5em;
+    margin-bottom: 10px;
+}
+
+h5 {
+    font-size: 1.25em;
+    margin-bottom: 8px;
+}
+
+h6 {
+    font-size: 1em;
+    margin-bottom: 5px;
+}
+
+/* Paragraphs */
+p {
+    margin: 0 0 15px 0;
+    padding: 0;
+}
+
+/* Links */
+a {
+    color: #007bff;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+/* Lists */
+ul, ol {
+    margin: 0 0 15px 20px;
+    padding: 0;
+}
+
+ul li, ol li {
+    margin-bottom: 10px;
+}
+
+/* Code blocks */
+pre {
+    background-color: #f5f5f5;
+    border-left: 3px solid #007bff;
+    padding: 15px;
+    overflow-x: auto;
+    border-radius: 4px;
+}
+
+code {
+    background-color: #f5f5f5;
+    padding: 2px 4px;
+    border-radius: 4px;
+    font-size: 90%;
+}
+
+/* Blockquotes */
+blockquote {
+    border-left: 5px solid #007bff;
+    padding: 10px 20px;
+    margin: 0 0 15px 0;
+    background-color: #f9f9f9;
+    font-style: italic;
+}
+
+/* Images */
+img {
+    max-width: 100%;
+    height: auto;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+/* Tables */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+}
+
+table, th, td {
+    border: 1px solid #ddd;
+}
+
+th, td {
+    padding: 10px;
+    text-align: left;
+}
+
+th {
+    background-color: #f4f4f4;
+}
+
+/* Horizontal rule */
+hr {
+    border: 0;
+    border-top: 1px solid #ddd;
+    margin: 20px 0;
+}
+
+    </style>
+</head>
+<body class="bg-gray-100 dark-mode:bg-gray-900">
+    <div class="flex">
+        <nav class="navbar">
+            <ul class="p-4">
+                
+                    <li><a href="apache poi.html">apache poi</a></li>
+                
+                    <li><a href="Best Practices in Java Development.html">Best Practices in Java Development</a></li>
+                
+                    <li><a href="checksum.html">checksum</a></li>
+                
+                    <li><a href="coding starndards.html">coding starndards</a></li>
+                
+                    <li><a href="coding starndardsgit hub workflow .html">coding starndardsgit hub workflow </a></li>
+                
+                    <li><a href="Collaboration Best Practices.html">Collaboration Best Practices</a></li>
+                
+                    <li><a href="dao.html">dao</a></li>
+                
+                    <li><a href="dev and env setup.html">dev and env setup</a></li>
+                
+                    <li><a href="Developer's best practices.html">Developer's best practices</a></li>
+                
+                    <li><a href="ententies.html">ententies</a></li>
+                
+                    <li><a href="entites.html">entites</a></li>
+                
+                    <li><a href="genericDaoJpa.html">genericDaoJpa</a></li>
+                
+                    <li><a href="introduction.html">introduction</a></li>
+                
+                    <li><a href="JPQL .html">JPQL </a></li>
+                
+                    <li><a href="Liquibase.html">Liquibase</a></li>
+                
+                    <li><a href="output.html">output</a></li>
+                
+                    <li><a href="problem in line.html">problem in line</a></li>
+                
+                    <li><a href="project architecture.html">project architecture</a></li>
+                
+                    <li><a href="unit tests - Copy.html">unit tests - Copy</a></li>
+                
+                    <li><a href="unit tests.html">unit tests</a></li>
+                
+                    <li><a href="User Rights.html">User Rights</a></li>
+                
+            </ul>
+            <button id="toggle-dark-mode" class="p-2">Dark</button>
+        </nav>
+        <main class="flex-1 p-4">
+            <ul>
+<li>Development Environment Setup</li>
+<li>Required software and tools</li>
+<li>Installation and configuration instructions</li>
+<li>Recommended development environment best practices</li>
+</ul>
+<p>Open a terminal window on your machine.
+Log in to MySQL using the root user. You will be prompted to enter the password for the root user.
+<code>bash
+mysql -u root -p</code>
+Once you're logged in, run the following command to import the dump file into your database. Replace <code>dump_path</code> with the actual path to your dump file.
+<code>bash
+mysql -u root -p tumorotek --default-character-set=utf8 &lt; dump_path</code>
+Note: It's important to use the root user for this operation. If you don't use the root user, you might encounter "Access denied" errors.</p>
+<ul>
+<li>Gatsbi Config Tomcat
+Navigate to <code>C:\...Tomcat\...\conf\Catalina\localhost</code>
+Verify that these attributes are configured correctly:
+```xml
+// ### Gatsbi .....
+gatsbi.installation=true</li>
+</ul>
+<h2>exemple conf pour front end déployé (war en français)</h2>
+<p>gatsbi.appli.url.path=http://localhost:4200/#/authentication?token={0}&amp;plateformeId={1}</p>
+<h1>If you use Nginx (the case in production environment)</h1>
+<h2>gatsbi.appli.url.path=http://localhost:80/gatsbi/fr/#/authentication?token={0}&amp;plateformeId={1}</h2>
+<h1>change the port to the same port that is configured inside C:\T...\tumorotek-gatsbi-api-rest\src\main\resources\application.properties as a value of quarkus.http.port=xxxx</h1>
+<p>gatsbi.api.url.base=http://localhost:8703/tumorotek/api/gatsbi</p>
+<h1>Don't touch this config</h1>
+<p>gatsbi.api.url.etude.path=/{etudeId}/etude
+gatsbi.api.url.contexte.path=/{etudeId}/contexte/{type}
+gatsbi.api.url.parametrage.path=/{parametrageId}/parametrage
+gatsbi.api.url.schema.visite.path=/{etudeId}/etude/schemavisites</p>
+<p>Verify Database connection parameters inside the file <code>application.properties</code>
+<code>properties
+quarkus.datasource.db-kind=mysql
+quarkus.datasource.username={userName}
+quarkus.datasource.password={password}
+quarkus.datasource.jdbc.url=jdbc:mysql://localhost:3306/{dbname}?characterEncoding=UTF-8&amp;rewriteBatchedStatements=true&amp;serverTimezone=Europe/Paris
+quarkus.datasource.jdbc.driver=com.mysql.cj.jdbc.Driver</code></p>
+<ul>
+<li>Troubleshooting Potential Errors</li>
+</ul>
+<p>Access Denied Error (ERROR 1227): If you encounter an "Access denied" error like ERROR 1227 (42000) during the import process, make sure you're using the root user. Only the root user typically has the necessary privileges to perform this operation.</p>
+<p>Function Declaration Error (ERROR 1418): If you encounter an "ERROR 1418 (HY000)" related to function declaration and binary logging. You need to modify the MySQL configuration to allow non-deterministic functions to be created. Run the following command:
+<code>sql 
+SET GLOBAL log_bin_trust_function_creators = 1;</code></p>
+<p>Maven Compile: If you have a Maven compile problem especially if the error message is:
+<code>Failed to execute goal on project tumorotek-interface: Could not resolve dependencies for project fr.aphp.tumorotek:tumorotek-interface:jar:2.3.0.4-SNAPSHOT: Failed to collect dependencies at org.springframework.ws:spring-ws-security:jar:2.1.3.RELEASE -&gt;`...</code>
+You are working with the wrong Maven version. The right version is <code>mvn</code> 3.6.3</p>
+        </main>
+    </div>
+    <script>
+        document.getElementById('toggle-dark-mode').addEventListener('click', () => {
+            document.body.classList.toggle('dark-mode');
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Documentation Site</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<style>
+    body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+}
+
+.navbar {
+    background-color: #333;
+    color: white;
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.app-name {
+    font-size: 1.5em;
+}
+
+.folder-links {
+    display: flex;
+    gap: 10px;
+}
+
+.folder-link {
+    color: white;
+    text-decoration: none;
+}
+
+.folder-link:hover {
+    text-decoration: underline;
+}
+
+.container {
+    display: flex;
+    flex: 1;
+}
+
+.sidebar {
+    width: 200px;
+    background-color: #1e90ff;
+    padding: 10px;
+    color: white;
+    overflow-y: auto;
+}
+
+.content {
+    flex: 1;
+    padding: 20px;
+    overflow-y: auto;
+}
+
+</style>
+<body>
+    <div class="navbar">
+        <div class="app-name">Placeholder</div>
+        <div class="folder-links">
+            
+                <a href="#" class="folder-link" data-folder="C:\Users\work\Documents\tkBook_md\Best Practice">C:\Users\work\Documents\tkBook_md\Best Practice</a>
+            
+                <a href="#" class="folder-link" data-folder="C:\Users\work\Documents\tkBook_md\Errors">C:\Users\work\Documents\tkBook_md\Errors</a>
+            
+                <a href="#" class="folder-link" data-folder="C:\Users\work\Documents\tkBook_md\Java">C:\Users\work\Documents\tkBook_md\Java</a>
+            
+                <a href="#" class="folder-link" data-folder="C:\Users\work\Documents\tkBook_md\Tumorotek">C:\Users\work\Documents\tkBook_md\Tumorotek</a>
+            
+        </div>
+    </div>
+    <div class="container">
+        <div class="sidebar" id="sidebar"></div>
+        <div class="content">
+            <p>All or most of the DAO interfaces in Tumorotek extends GenericDaoJpa. </p>
+<h3>GenericDaoJpa Interface</h3>
+<p>The GenericDaoJpa interface defines a generic Data Access Object (DAO) using Java Persistence API (JPA) for performing CRUD (Create, Read, Update, Delete) operations on a database. This interface is parameterized with a type T (the entity type) and PK (the primary key type which extends Serializable).</p>
+<h4>Purpose</h4>
+<p>The purpose of this interface is to provide a standardized set of methods for interacting with a database, allowing for the persistence, retrieval, updating, and deletion of objects. By defining these methods generically, this interface can be implemented for any entity type, promoting code reuse and reducing boilerplate.</p>
+<h4>Methods and Their Purposes</h4>
+<ul>
+<li><strong>createObject(T newInstance)</strong></li>
+<li><em>Purpose:</em> Persist a new instance of an object in the database.</li>
+<li><em>Parameter:</em> newInstance is the instance of the object to be created.</li>
+<li>
+<p><em>CRUD Action:</em> Create</p>
+</li>
+<li>
+<p><strong>mergeObject(T o)</strong></p>
+</li>
+<li><em>Purpose:</em> Merge the state of the given entity into the current persistence context.</li>
+<li><em>Parameter:</em> o is the instance of the object to be merged.</li>
+<li><em>Returns:</em> The managed instance that the state was merged to.</li>
+<li>
+<p><em>CRUD Action:</em> Update</p>
+</li>
+<li>
+<p><strong>findById(PK id)</strong></p>
+</li>
+<li><em>Purpose:</em> Retrieve an object that was persistent in the database using its primary key.</li>
+<li><em>Parameter:</em> id is the primary key of the object.</li>
+<li><em>Returns:</em> The object with the given primary key.</li>
+<li>
+<p><em>CRUD Action:</em> Read</p>
+</li>
+<li>
+<p><strong>findAll()</strong></p>
+</li>
+<li><em>Purpose:</em> Return all objects of a certain type present in the database.</li>
+<li><em>Returns:</em> A list of all objects of the specified type.</li>
+<li>
+<p><em>CRUD Action:</em> Read</p>
+</li>
+<li>
+<p><strong>updateObject(T transientObject)</strong></p>
+</li>
+<li><em>Purpose:</em> Save the changes made to a persistent object.</li>
+<li><em>Parameter:</em> transientObject is the object to be updated in the database.</li>
+<li>
+<p><em>CRUD Action:</em> Update</p>
+</li>
+<li>
+<p><strong>removeObject(PK id)</strong></p>
+<ul>
+<li><strong>Purpose:</strong> Remove an object from the database.</li>
+<li><strong>Parameter:</strong> id is the primary key of the object to be removed.</li>
+<li><strong>CRUD Action:</strong> Delete</li>
+</ul>
+</li>
+</ul>
+<h4>Delete</h4>
+<p>Where there is a need to delete a record from [Databse] your first reflax may be to cretae a named query. For Example:</p>
+<p><code>java
+@NamedQuery(name = "ParametreValeurSpecifique.deleteByPlateformeIdAndCode",
+            query = "DELETE FROM ParametreValeurSpecifique p WHERE p.plateformeId = ?1 AND p.code = ?2")</code></p>
+<p>Then to create a method with [the] dame name <code>deleteByPlateformeIdAndCode</code> in [the] DAO, Manager, and in [the] ManagerImpl [to] call [the] deleteByPlateformeIdAndCode on [the] dao instance. But it won't work. You will get an exception: object is not an instance of declaring class. The excpetion happens when you call [the] invoke method in public class FinderIntroductionInterceptor implements IntroductionInterceptor.</p>
+<p><code>java
+@Override
+public Object invoke(final MethodInvocation methodInvocation) throws Throwable {
+    final FinderExecutor genericDao = (FinderExecutor) methodInvocation.getThis();
+    final String methodName = methodInvocation.getMethod().getName();
+    if(methodName.startsWith("find") &amp;&amp; !methodName.equals("findById") &amp;&amp; !methodName.equals("findAll")) {
+        final Object[] arguments = methodInvocation.getArguments();
+        return genericDao.executeFinder(methodInvocation.getMethod(), arguments);
+    }
+    else if(methodName.startsWith("count")) {
+        final Object[] arguments = methodInvocation.getArguments();
+        return genericDao.executeCounter(methodInvocation.getMethod(), arguments);         
+    }
+    return methodInvocation.proceed();
+}</code></p>
+<p>Now, try to find in [the] code base a named query that corresponds to "DELETE FROM...".</p>
+<p>I didn't find any in [the] main Entites. This means that deleting from [the] Database in Tumorotek is implemented differently and not by [the] mechanism of named queries. A similar exploration through [the] different DAOs of [the] project shows that most of [the] methods are declared starting with "find". Even if what you need is to count, developers called it "findCount". The support for invoking methods that start with "count" is later introduction (2022). </p>
+<p><code>java
+else if(methodName.startsWith("count"))</code></p>
+<p><strong>How do we delete in Tumorotek?</strong> In [the manager interface], create a method that starts with "remove" and not "delete", and finish it with "Manager". If deleting in cascade is needed, see code examples from EchantillonManager. If not, call <a href="#methods-and-their-purposes">the removeObject method</a> and pass[...] ID[...] record you want to delete.</p>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', (event) => {
+            document.querySelectorAll('.folder-link').forEach(link => {
+                link.addEventListener('click', function() {
+                    const folder = this.getAttribute('data-folder');
+                    fetchSidebarLinks(folder);
+                });
+            });
+        });
+
+        function fetchSidebarLinks(folder) {
+            const sidebar = document.getElementById('sidebar');
+            sidebar.innerHTML = '';
+            fetch(`${folder}/index.html`).then(response => response.text()).then(data => {
+                const parser = new DOMParser();
+                const doc = parser.parseFromString(data, 'text/html');
+                const links = doc.querySelectorAll('a.nav-link');
+                links.forEach(link => {
+                    sidebar.appendChild(link.cloneNode(true));
+                });
+            });
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Documentation Site</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<style>
+    body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+}
+
+.navbar {
+    background-color: #333;
+    color: white;
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.app-name {
+    font-size: 1.5em;
+}
+
+.folder-links {
+    display: flex;
+    gap: 10px;
+}
+
+.folder-link {
+    color: white;
+    text-decoration: none;
+}
+
+.folder-link:hover {
+    text-decoration: underline;
+}
+
+.container {
+    display: flex;
+    flex: 1;
+}
+
+.sidebar {
+    width: 200px;
+    background-color: #1e90ff;
+    padding: 10px;
+    color: white;
+    overflow-y: auto;
+}
+
+.content {
+    flex: 1;
+    padding: 20px;
+    overflow-y: auto;
+}
+
+</style>
+<body>
+    <div class="navbar">
+        <div class="app-name">Placeholder</div>
+        <div class="folder-links">
+            
+                <a href="#" class="folder-link" data-folder="C:\Users\work\Documents\tkBook_md\Best Practice">C:\Users\work\Documents\tkBook_md\Best Practice</a>
+            
+                <a href="#" class="folder-link" data-folder="C:\Users\work\Documents\tkBook_md\Errors">C:\Users\work\Documents\tkBook_md\Errors</a>
+            
+                <a href="#" class="folder-link" data-folder="C:\Users\work\Documents\tkBook_md\Java">C:\Users\work\Documents\tkBook_md\Java</a>
+            
+                <a href="#" class="folder-link" data-folder="C:\Users\work\Documents\tkBook_md\Tumorotek">C:\Users\work\Documents\tkBook_md\Tumorotek</a>
+            
+        </div>
+    </div>
+    <div class="container">
+        <div class="sidebar" id="sidebar"></div>
+        <div class="content">
+            <h1>Collaboration Best Practices</h1>
+<ul>
+<li><strong>Clear Communication:</strong> Regularly update the team on project progress using scheduled team meetings or collaboration tools to maintain transparent communication.</li>
+<li><strong>Transparent Expectations:</strong> Clearly communicate project expectations through project management tools, ensuring alignment on tasks, deadlines, and quality standards.</li>
+<li><strong>Collaborative Task Distribution:</strong> Involve developers in task discussions for better alignment between task assignments and individual strengths and preferences.</li>
+<li><strong>Code Review as a Learning Opportunity:</strong> Position code reviews as constructive learning experiences, encouraging a positive feedback culture that emphasizes improvement and knowledge sharing.</li>
+<li><strong>Regular Check-ins:</strong> Schedule one-on-one check-ins to address individual progress, provide feedback, and set personal development goals, fostering a supportive work environment.</li>
+<li><strong>Empower Decision-Making:</strong> Empower developers to make decisions within their expertise by establishing clear decision-making frameworks, promoting autonomy, and fostering responsibility.</li>
+<li><strong>Recognition and Appreciation:</strong> Regularly recognize and appreciate individual and team contributions through public praise and acknowledgments to boost team morale.</li>
+<li><strong>Feedback Loops:</strong> Encourage continuous improvement through regular feedback loops, both from managers to developers and vice versa, promoting a culture of learning and growth.</li>
+<li><strong>Support Professional Growth:</strong> Invest in the professional growth of each team member by providing opportunities for training, conferences, and certifications, fostering a culture of continuous learning.</li>
+<li><strong>Celebrate Successes:</strong> Celebrate milestones and project successes through team celebrations and expressions of gratitude, fostering a positive and motivated work environment.</li>
+<li><strong>Flexibility and Adaptability:</strong> Embrace change, adapt to challenges, and encourage innovative solutions by fostering a culture that values flexibility within the team.</li>
+<li><strong>Clear Documentation:</strong> Maintain clear and accessible project documentation, regularly updating it to ensure understanding and streamline workflows among team members.</li>
+</ul>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', (event) => {
+            document.querySelectorAll('.folder-link').forEach(link => {
+                link.addEventListener('click', function() {
+                    const folder = this.getAttribute('data-folder');
+                    fetchSidebarLinks(folder);
+                });
+            });
+        });
+
+        function fetchSidebarLinks(folder) {
+            const sidebar = document.getElementById('sidebar');
+            sidebar.innerHTML = '';
+            fetch(`${folder}/index.html`).then(response => response.text()).then(data => {
+                const parser = new DOMParser();
+                const doc = parser.parseFromString(data, 'text/html');
+                const links = doc.querySelectorAll('a.nav-link');
+                links.forEach(link => {
+                    sidebar.appendChild(link.cloneNode(true));
+                });
+            });
+        }
+    </script>
+</body>
+</html>
